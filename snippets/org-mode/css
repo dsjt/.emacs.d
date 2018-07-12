@@ -2,4 +2,4 @@
 # name: css
 # key: css
 # --
-#+HTML_HEAD: <link href="/media/tishida/STLM/howm/2016/04/styles/original/mysimple.css" rel="stylesheet"></link>
+#+HTML_HEAD: <link href=`my/simple-css-file` rel="stylesheet"></link>
