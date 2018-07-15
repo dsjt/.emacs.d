@@ -4,7 +4,9 @@
 (setq mc/cmds-to-run-for-all
       '(
         electric-newline-and-maybe-indent
+        forward-sexp
         kill-region
+        sp-forward-sexp
         sp-splice-sexp
         ))
 
