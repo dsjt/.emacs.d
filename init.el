@@ -65,7 +65,7 @@
   (ffap-bindings)
   (put 'narrow-to-region 'disabled nil)
   (mouse-avoidance-mode 'exile)
-n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
+  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
   (savehist-mode 1)
   (require 'saveplace)
   (setq save-place t
@@ -381,9 +381,10 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
 (global-set-key (kbd "C-l g") 'helm-ag)
 (package-install 'anzu)
 (global-anzu-mode 1)
+(global-set-key (kbd "C-x q") 'anzu-query-replace)
 (package-install 'visual-regexp)
 (global-unset-key (kbd "C-x q"))
-(global-set-key (kbd "C-x q") 'vr/query-replace)
+(global-set-key (kbd "C-x Q") 'vr/query-replace)
 (global-set-key (kbd "C-S-c m") 'vr/mc-mark)
 (setq vr/default-replace-preview t)
 (setq case-replace nil)
@@ -680,7 +681,7 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
                 "-c"
                 (buffer-file-name))
   (revert-buffer nil t))
-(el-get-bundle 'clang-format)
+(package-install 'clang-format)
 (setq clang-format-executable "clang-format-3.5")
 (set-default 'clang-format-style
              "{BasedOnStyle: Google, IndentWidth: 4, Standard: C++11}")
@@ -699,6 +700,13 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
 (define-key hs-minor-mode-map (kbd "C-M-~") 'hs-show-all)
 (define-key hs-minor-mode-map (kbd "C-l ^")
   (lambda () (interactive) (hs-hide-level 2)))
+(defun display-code-line-counts (ov)
+  (overlay-put ov 'display
+               (format "   ... [%d]"
+                       (count-lines (overlay-start ov)
+                                    (overlay-end ov))))
+  (overlay-put ov 'face '(:foreground "yellow green")))
+(setq hs-set-up-overlay 'display-code-line-counts)
 
 ;; External Program Utility
 (defvar my/open-command nil)
@@ -775,7 +783,7 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
 (global-git-gutter-mode 1)
 
 ;; Number
-(el-get-bundle 'number)
+(package-install 'number)
 (require 'number)
 (global-set-key (kbd "C-c C-+") 'number/add)
 (global-set-key (kbd "C-c C--") 'number/sub)
@@ -804,21 +812,39 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
 (define-key python-mode-map (kbd "C-M-f") 'python-nav-forward-defun)
 (define-key python-mode-map (kbd "C-M-b") 'python-nav-backward-defun)
 ;; (add-hook 'python-mode-hook 'turn-off-smartparens-mode)
-
-(setq python-shell-interpreter "python3")
-(setq python-shell-interpreter-args "-i")
-(setq indent-tabs-mode nil)
-(setq indent-level 4)
-(setq python-indent 4)
-(setq tab-width 4)
-(setq python-indent-guess-indent-offset nil)
-(setq python-fill-paren-function nil)
+(setq python-shell-interpreter "python3"
+      python-shell-interpreter-args "-i"
+      indent-tabs-mode nil
+      indent-level 4
+      python-indent 4
+      tab-width 4
+      python-indent-guess-indent-offset nil
+      python-fill-paren-function nil)
 ;; 他のところでエラーがでるかもしれない.
 ;; run-python で日本語を通すために必要
 (setenv "LANG" "ja_JP.UTF-8")
 (setenv "LC_ALL" "ja_JP.UTF-8")
 (setenv "LC_CTYPE" "ja_JP.UTF-8")
 (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
+(defvar my/py-hide-show-keywords '("class" "def" "elif" "else" "except"
+                                   "for" "if" "while" "finally" "try" "with"))
+(defun my/replace-hs-spectial ()
+  (setq hs-special-modes-alist
+        (remove-if #'(lambda (x) (equal 'python-mode (car x)))
+                   hs-special-modes-alist))
+  (push (list
+         'python-mode
+         (mapconcat #'(lambda (x) (concat "^\\s-*" x "\\>"))
+                    my/py-hide-show-keywords "\\|")
+         nil
+         "#"
+         #'(lambda (x) (python-nav-end-of-block))
+         nil)
+        hs-special-modes-alist))
+(add-hook 'python-mode-hook 'my/replace-hs-spectial)
+
+
+
 
 ;; (el-get-bundle py-autopep8
 ;;   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
@@ -893,7 +919,6 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
                          empty          ; 先頭/末尾の空行
                          space-mark     ; 表示のマッピング
                          tab-mark
-                         lines
                          ))
 (setq whitespace-display-mappings
       '((space-mark ?\u3000 [?\u25a1])
@@ -926,8 +951,8 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Volitate
-(package-install 'volatile-highlights)
-(volatile-highlights-mode 1)
+;; (package-install 'volatile-highlights)
+;; (volatile-highlights-mode -1)
 
 
 ;; ;; 便利そうだけれども、結局あまり使えないのでオフにする
@@ -995,48 +1020,7 @@ n  (add-hook 'emacs-lisp-mode 'electric-indent-mode)
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (volatile-highlights
-     yascroll
-     company
-     company-mode
-     bm
-     git-gutter-fringe
-     popwin
-     visual-regexp
-     htmlize
-     ox-reveal
-     org-reveal
-     git-gutter
-     yasnippet-snippets
-     helm-c-yasnippet
-     yasnippet
-     org-gcal
-     org-dashboard
-     rotate
-     smartrep
-     dired-hacks-utils
-     org
-     helm
-     undo-tree
-     solarized-theme
-     smartparens
-     sequential-command
-     restart-emacs
-     recentf-ext
-     rainbow-mode
-     openwith
-     open-junk-file
-     multiple-cursors
-     migemo
-     magit
-     howm
-     helm-swoop
-     helm-ag
-     expand-region
-     dired-filter
-     crux
-     avy
-     anzu))))
+    (python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
