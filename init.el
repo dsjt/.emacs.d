@@ -148,7 +148,6 @@
 (global-unset-key (kbd "M-."))
 (global-set-key (kbd "M-.") 'helm-etags-select)
 (global-set-key (kbd "M-/") 'helm-dabbrev)
-(helm-mode)
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (setq helm-completing-read-handlers-alist
       (append helm-completing-read-handlers-alist
@@ -156,6 +155,8 @@
                 (dired-create-directory . nil)
                 (howm-list-grep-fixed . nil))))
 (setq helm-ff-skip-boring-files t)
+(helm-mode)
+
 
 (require 'recentf nil t)
 (setq recentf-auto-cleanup 'never
