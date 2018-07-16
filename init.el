@@ -68,6 +68,7 @@
   (add-hook 'emacs-lisp-mode 'electric-indent-mode)
   (savehist-mode 1)
   (require 'saveplace)
+  (save-place-mode 1)
   (setq save-place t
         save-place-file "~/.emacs.d/saved-places"))
 ;;;###autoload
@@ -488,30 +489,11 @@
     (find-file dir)))
 (global-set-key (kbd "C-l f") 'my/goto-junk-directory)
 
-;; ;; Latex
-;; (el-get-bundle elpa:yatex)
-;; (require 'yatex)
-;; (add-to-list 'auto-mode-alist
-;;              '("\\.tex\\'" . yatex-mode))
-;; (with-eval-after-load 'yatexprc
-;;   (add-to-list 'YaTeX-dvi2-command-ext-alist '("open" . ".pdf")))
-;; (setq YaTeX-kanji-code 4)
-;; (setq YaTeX-coding-system 'utf-8-unix)
-;; (el-get-bundle 'latex-math-preview
-;;   :type emacswiki)
-;; (autoload 'latex-math-preview-expression "latex-math-preview" nil t)
-;; (autoload 'latex-math-preview-insert-symbol "latex-math-preview" nil t)
-;; (autoload 'latex-math-preview-save-image-file "latex-math-preview" nil t)
-;; (autoload 'latex-math-preview-beamer-frame "latex-math-preview" nil t)
-;; (defun my/latex-math-preview-settings()
-;;   (YaTeX-define-key "p" 'latex-math-preview-expression)
-;;   (YaTeX-define-key "\C-p" 'latex-math-preview-save-image-file)
-;;   (YaTeX-define-key "j" 'latex-math-preview-insert-symbol)
-;;   (YaTeX-define-key "\C-j" 'latex-math-preview-last-symbol-again)
-;;   (YaTeX-define-key "\C-b" 'latex-math-preview-beamer-frame))
-;; (add-hook 'yatex-mode-hook 'my/latex-math-preview-settings)
-;; (setq latex-math-preview-in-math-mode-p-func 'YaTeX-in-math-mode-p)
-;; (define-key org-mode-map (kbd "C-l C-p") 'latex-math-preview-expression)
+;; Latex
+(package-install 'auctex)
+(require 'latex)
+(add-hook 'latex-mode-hook #'tex-fold-mode)
+(define-key LaTeX-mode-map (kbd "C-^") #'TeX-fold-dwim)
 
 ;; Parenthesis
 (package-install 'smartparens)
@@ -692,17 +674,17 @@
 (add-hook 'lisp-mode-hook 'hs-minor-mode)
 (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
-(add-hook 'latex-mode-hook 'hs-minor-mode)
+;; (add-hook 'latex-mode-hook 'hs-minor-mode)
 (add-hook 'YaTeX-mode-hook 'hs-minor-mode)
 (add-hook 'python-mode-hook 'hs-minor-mode)
 (define-key hs-minor-mode-map (kbd "C-^") 'hs-toggle-hiding)
 (define-key hs-minor-mode-map (kbd "C-M-^") 'hs-hide-all)
 (define-key hs-minor-mode-map (kbd "C-M-~") 'hs-show-all)
-(define-key hs-minor-mode-map (kbd "C-l ^")
+(define-key hs-minor-mode-map (kbd "C-l point)^")
   (lambda () (interactive) (hs-hide-level 2)))
 (defun display-code-line-counts (ov)
   (overlay-put ov 'display
-               (format "   ... [%d]"
+               (format "   ... [+%3d] "
                        (count-lines (overlay-start ov)
                                     (overlay-end ov))))
   (overlay-put ov 'face '(:foreground "yellow green")))
@@ -836,7 +818,7 @@
          'python-mode
          (mapconcat #'(lambda (x) (concat "^\\s-*" x "\\>"))
                     my/py-hide-show-keywords "\\|")
-         nil
+         "^\\s-*"
          "#"
          #'(lambda (x) (python-nav-end-of-block))
          nil)
@@ -1020,7 +1002,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu))))
+    (auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
