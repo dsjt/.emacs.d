@@ -508,6 +508,7 @@
 (sp-local-pair 'org-mode "$" "$")
 (sp-local-pair 'org-mode "\"" "\"")
 (sp-use-paredit-bindings)
+(global-set-key (kbd "<C-backspace>") 'sp-backward-kill-word)
 
 ;; Complete
 (global-set-key (kbd "C-;") 'hippie-expand)
@@ -837,10 +838,11 @@
         hs-special-modes-alist))
 (add-hook 'python-mode-hook 'my/replace-hs-spectial)
 
-
-
-
-;; (el-get-bundle py-autopep8
+(package-install 'py-autopep8)
+(require 'py-autopep8)
+(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+(setq py-autopep8-options "--")
+;; (el-get-bundle
 ;;   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 ;; (require 'py-autopep8)
 ;; ;; (el-get-bundle py-autopep8
@@ -906,7 +908,8 @@
 
 ;; Whitespace
 (require 'whitespace)
-(setq whitespace-style '(face           ; faceで可視化
+(setq whitespace-style '(
+                         ;; face           ; faceで可視化
                          trailing       ; 行末
                          tabs           ; タブ
                          spaces         ; スペース
@@ -1014,7 +1017,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu))))
+    (py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
