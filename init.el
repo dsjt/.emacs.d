@@ -383,7 +383,6 @@
 (global-anzu-mode 1)
 (global-set-key (kbd "C-x q") 'anzu-query-replace)
 (package-install 'visual-regexp)
-(global-unset-key (kbd "C-x q"))
 (global-set-key (kbd "C-x Q") 'vr/query-replace)
 (global-set-key (kbd "C-S-c m") 'vr/mc-mark)
 (setq vr/default-replace-preview t)

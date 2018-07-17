@@ -5,6 +5,7 @@
       '(
         electric-newline-and-maybe-indent
         forward-sexp
+        indent-for-tab-command
         kill-region
         sp-forward-sexp
         sp-splice-sexp
