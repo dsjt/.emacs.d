@@ -7,6 +7,9 @@
         forward-sexp
         indent-for-tab-command
         kill-region
+        seq-end
+        seq-home
+        sp-backward-sexp
         sp-forward-sexp
         sp-splice-sexp
         ))
