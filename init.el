@@ -229,7 +229,7 @@
             (org-agenda-log-mode-items '(state))
             (org-agenda-skip-function '(org-agenda-skip-entry-if
                                         'regexp
-                                        "^<[0-9\-].+>$"))
+                                        "^[^:]? ?<[0-9\-].+>$"))
             (org-agenda-use-time-grid nil)
             ))
           (tags "+Inbox/TODO")
@@ -244,6 +244,7 @@
             (org-agenda-skip-function '(org-agenda-skip-entry-if
                                         'todo
                                         '("DONE" "CANC")))))
+          (tags "Wait")
           (tags-todo "+Project/TODO")
           ))
         ("w" "8 days agenda"
@@ -252,7 +253,25 @@
                       (org-agenda-columns-add-appointments-to-effort-sum t)
                       (org-agenda-log-mode-items '(state clock closed))))
           (tags-todo "Inbox")
-          (todo "TODO")))))
+          (todo "TODO")))
+        ("o" "next generation"
+         ((agenda
+           "reminder"
+           ((org-agenda-use-time-grid nil)))
+          (tags "+Inbox")
+          (todo
+           "TODO"
+           ((org-agenda-todo-ignore-scheduled t)
+            (org-agenda-tag-filter-preset '("-Wait")))))
+         ((org-agenda-span 1)
+          (org-agenda-sorting-strategy
+           '((agenda habit-down time-up priority-down category-keep)
+             (todo category-keep priority-down tsia-up)
+             (tags category-keep priority-down tsia-up)
+             (search category-keep))))
+         )
+        )
+      )
 (defvar my/toggle-including-org-agenda-archives nil)
 (defun my/toggle-including-org-agenda-archives ()
   (interactive)
@@ -382,8 +401,9 @@
 (package-install 'anzu)
 (global-anzu-mode 1)
 (global-set-key (kbd "C-x q") 'anzu-query-replace)
+(global-set-key (kbd "C-x Q") 'anzu-query-replace-regexp)
 (package-install 'visual-regexp)
-(global-set-key (kbd "C-x Q") 'vr/query-replace)
+;; (global-set-key (kbd "C-x Q") 'vr/query-replace)
 (global-set-key (kbd "C-S-c m") 'vr/mc-mark)
 (setq vr/default-replace-preview t)
 (setq case-replace nil)
@@ -447,20 +467,26 @@
 (ad-activate 'dired-find-file)
 (global-set-key (kbd "C-x C-j") 'dired-jump)
 (package-install 'dired-filter)
-(with-eval-after-load 'dired-filter
-  (setq dired-filter-group-saved-groups
-        '(("default"
-           ("PDF"      (extension  "pdf"))
-           ("LaTeX"    (extension "tex" "bib"))
-           ("Org"      (extension  "org"))
-           ("Archives" (extension "zip" "rar" "gz" "bz2" "tar"))
-           ("python"   (extension "py"))
-           ("cpp"      (extension "cpp"))
-           ("h"        (extension "h"))
-           ("hpp"      (extension "hpp"))
-           ("sh"       (extension "sh")))))
-  (add-hook 'dired-mode-hook 'dired-filter-group-mode 1)
-  (define-key dired-mode-map (kbd ")") #'dired-filter-group-mode))
+(require 'dired-filter)
+(setq dired-filter-group-saved-groups
+      '(("default"
+         ("PDF"      (extension  "pdf"))
+         ("LaTeX"    (extension "tex" "bib"))
+         ("Org"      (extension  "org"))
+         ("Archives" (extension "zip" "rar" "gz" "bz2" "tar"))
+         ("python"   (extension "py"))
+         ("cpp"      (extension "cpp"))
+         ("h"        (extension "h"))
+         ("hpp"      (extension "hpp"))
+         ("sh"       (extension "sh"))
+         ("archive" (extension "org_archive" "org_archive_2018")))))
+(add-hook 'dired-mode-hook 'dired-filter-group-mode 1)
+(add-hook 'dired-mode-hook 'dired-filter-mode 1)
+(define-key dired-mode-map (kbd ")") #'dired-filter-group-mode)
+(require 'dired-x)
+(setq-default dired-omit-files-p t) ; this is buffer-local variable
+;; (setq dired-omit-files "^\\.$\\|^\\..+$\\|\\.org_archive$\\|\\.org_archive_2018.*$")
+(setq dired-omit-files nil)
 ;; my/dired-config
 ;;;###autoload
 ;; (defun my/dired-config()
@@ -492,7 +518,24 @@
 (require 'latex)
 (add-hook 'latex-mode-hook #'tex-fold-mode)
 (define-key LaTeX-mode-map (kbd "C-^") #'TeX-fold-dwim)
-
+(add-hook 'LaTeX-mode-hook
+          '(lambda ()
+             (let*
+                 ((kcode (symbol-name buffer-file-coding-system))
+                  (opt (cond
+                        ((string-match "^utf-8" kcode) " -kanji=utf8")
+                        ((string-match "^shift_jis" kcode) " -kanji=sjis")
+                        ((string-match "^euc-jp" kcode) " -kanji=euc")
+                        ((string-match "^iso-2022-jp" kcode) " -kanji=jis")
+                        (t ""))))
+               (if (boundp 'japanese-TeX-command-list)
+                   (progn
+                     (setcar (cdr (assoc "pLaTeX" japanese-TeX-command-list))
+                             (concat "%(PDF)platex" opt " %`%S%(PDFout)%(mode)%' %t"))
+                     (setcar (cdr (assoc "jBibTeX" japanese-TeX-command-list))
+                             (concat "%(PDF)jbibtex" opt " %s"))
+                     (message "pLaTeX UTF-8 flag enabled"))
+                 (message "pLaTeX UTF-8 flag disabled")))))
 ;; Parenthesis
 (package-install 'smartparens)
 (smartparens-global-mode 1)
@@ -605,7 +648,10 @@
       howm-file-name-format "%Y/%m/%d-%H%M%S.org"
       howm-view-grep-parse-line
       "^\\(\\([a-zA-Z]:/\\)?[^:]*\\.howm\\):\\([0-9]*\\):\\(.*\\)$"
-      howm-excluded-file-regexp (string-join '("/\\.#"
+      howm-excluded-file-regexp (string-join '("setup"
+                                               "styles"
+                                               "/.git/"
+                                               "/\\.#"
                                                "[~#]$"
                                                "\\.bak$"
                                                "/CVS/"
@@ -619,14 +665,16 @@
                                                "\\.jpg$"
                                                "\\.h5$") "\\|"))
 (setq howm-menu-refresh-after-save nil)
-(setq howm-view-summary-persistent nil)
-(setq howm-template
-      (format "%s\n%s\n%s\n"
-              "#+title: %cursor"
-              (format "#+HTML_HEAD: <link href=%s rel=\"stylesheet\"></link>"
-                      my/simple-css-file)
-              "* 概要"))
-(setq howm-template-file-format "[[%s]]")
+(setq howm-view-summary-persistent1 nil)
+;; (setq howm-template
+;;       ;; (format "%s\n%s\n%s\n"
+;;       ;;         "#+title: %cursor"
+;;       ;;         (format "#+HTML_HEAD: <link href=%s rel=\"stylesheet\"></link>"
+;;       ;;                 my/simple-css-file)
+;;       ;;         "* 概要")
+;;       )
+;; (setq howm-template-file-format "[[%s]]")
+(setq howm-date-format "%Y-%m-%d")
 (setq howm-view-use-grep t)
 (setq howm-menu-recent-num 10)
 (setq howm-list-recent-days 20)
