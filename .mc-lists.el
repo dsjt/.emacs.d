@@ -3,10 +3,17 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        comment-indent-new-line
         electric-newline-and-maybe-indent
         forward-sexp
         indent-for-tab-command
         kill-region
+        org-delete-char
+        org-force-self-insert
+        org-self-insert-command
+        org-seq-end
+        org-seq-home
+        org-yank
         seq-end
         seq-home
         sp-backward-sexp

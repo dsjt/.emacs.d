@@ -2,6 +2,6 @@
 # name: sklearn.preprocessing.StandardScaler
 # --
 from sklearn.preprocessing import StandardScaler
-${1:"平均0、分散１へ（標準化）"}
+${1:# 平均0、分散１へ（標準化）}
 sc = StandardScaler()
-sc.fit_transform($2)
+sc.fit_transform(${2:X})

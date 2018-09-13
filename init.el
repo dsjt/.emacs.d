@@ -70,7 +70,8 @@
   (require 'saveplace)
   (save-place-mode 1)
   (setq save-place t
-        save-place-file "~/.emacs.d/saved-places"))
+        save-place-file "~/.emacs.d/saved-places")
+  (setq truncate-lines t))
 ;;;###autoload
 (defun my/switch-to-scratch-buffer ()
   "Switch to scratch buffer."
@@ -244,8 +245,8 @@
             (org-agenda-skip-function '(org-agenda-skip-entry-if
                                         'todo
                                         '("DONE" "CANC")))))
-          (tags "Wait")
           (tags-todo "+Project/TODO")
+          (tags "Wait")
           ))
         ("w" "8 days agenda"
          ((agenda "" ((org-agenda-span 8)
@@ -258,7 +259,7 @@
          ((agenda
            "reminder"
            ((org-agenda-use-time-grid nil)))
-          (tags "+Inbox")
+          (tags-todo "+Inbox")
           (todo
            "TODO"
            ((org-agenda-todo-ignore-scheduled t)
@@ -287,7 +288,11 @@
                      org-agenda-files))
     (message "org-agenda-files exclude archive files")))
 
-
+;;;###autoload
+(defun my/org-line-spacing ()
+  (make-local-variable 'line-spacing)
+  (setq line-spacing 3))
+(add-hook 'org-mode-hook 'my/org-line-spacing)
 
 (require 'solar)
 (setq holiday-general-holidays nil
@@ -329,6 +334,7 @@
                                (python . t)
                                (dot . t)
                                (org . t)))
+(setq org-babel-python-command "python3")
 (setq org-src-window-setup 'other-window)
 (setq org-image-actual-width '(256))
 (define-key org-mode-map (kbd "C-c C-7") 'org-edit-special)
@@ -538,6 +544,7 @@
                  (message "pLaTeX UTF-8 flag disabled")))))
 ;; Parenthesis
 (package-install 'smartparens)
+(require 'smartparens)
 (smartparens-global-mode 1)
 (smartparens-global-strict-mode -1)
 (setq sp-highlight-pair-overlay nil)
@@ -551,6 +558,7 @@
 (sp-local-pair 'org-mode "\"" "\"")
 (sp-use-paredit-bindings)
 (global-set-key (kbd "<C-backspace>") 'sp-backward-kill-word)
+(global-set-key (kbd "C-j") #'comment-indent-new-line)
 
 ;; Complete
 (global-set-key (kbd "C-;") 'hippie-expand)
@@ -639,7 +647,7 @@
       howm-menu-lang 'ja
       howm-keyword-case-fold-search t)
 (package-install 'howm)                  ; 上との順序，重要なので変更しない
-(require 'howm-mode)
+(require 'howm)
 (setq howm-list-recent-title t
       howm-list-all-title t
       howm-menu-expiry-hours 2
@@ -665,7 +673,7 @@
                                                "\\.jpg$"
                                                "\\.h5$") "\\|"))
 (setq howm-menu-refresh-after-save nil)
-(setq howm-view-summary-persistent1 nil)
+(setq howm-view-summary-persistent nil)
 ;; (setq howm-template
 ;;       ;; (format "%s\n%s\n%s\n"
 ;;       ;;         "#+title: %cursor"
@@ -888,7 +896,7 @@
 (package-install 'py-autopep8)
 (require 'py-autopep8)
 (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
-(setq py-autopep8-options "--")
+;; (setq py-autopep8-options "")
 ;; (el-get-bundle
 ;;   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 ;; (require 'py-autopep8)
@@ -1064,7 +1072,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu))))
+    (smooth-scroll latex-math-preview py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -1088,3 +1096,7 @@
 (setq org-reveal-root (format "file://%s/hobby/reveal.js/" my/hdd-dir))
 (package-install 'htmlize)
 (require 'htmlize)
+
+(package-install 'smooth-scroll)
+(require 'smooth-scroll)
+(smooth-scroll-mode 1)

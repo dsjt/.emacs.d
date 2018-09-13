@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: collection.Counter
+# key: collection
+# --
+from collections import Counter
