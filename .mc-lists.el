@@ -6,6 +6,7 @@
         comment-indent-new-line
         electric-newline-and-maybe-indent
         forward-sexp
+        howm-save-buffer
         indent-for-tab-command
         kill-region
         org-delete-char
@@ -13,6 +14,7 @@
         org-self-insert-command
         org-seq-end
         org-seq-home
+        org-todo
         org-yank
         seq-end
         seq-home

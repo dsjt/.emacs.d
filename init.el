@@ -243,8 +243,11 @@
                (tags category-keep priority-down tsia-up)
                (search category-keep)))
             (org-agenda-skip-function '(org-agenda-skip-entry-if
-                                        'todo
-                                        '("DONE" "CANC")))))
+                                       'nottodo
+                                       '("TODO")
+                                       ;; 'todo
+                                       ;; '("DONE" "CANC")
+                                       ))))
           (tags-todo "+Project/TODO")
           (tags "Wait")
           ))
