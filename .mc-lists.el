@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
         comment-indent-new-line
+        electric-graphviz-dot-semi
         electric-newline-and-maybe-indent
         forward-sexp
         howm-save-buffer
