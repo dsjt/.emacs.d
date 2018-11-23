@@ -143,7 +143,7 @@
 (global-set-key (kbd "C-c i") 'helm-imenu)
 (global-set-key (kbd "C-M-c") 'helm-resume)
 (global-set-key (kbd "C-x b") 'helm-mini)
-(global-set-key (kbd "C-x C-b") 'helm-mini)
+(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "<f1> h") 'helm-apropos)
 (global-unset-key (kbd "M-."))
@@ -184,7 +184,8 @@
 
 (setq org-startup-folded nil
       org-hide-leading-stars nil
-      org-log-done 'time
+      ;; org-log-done 'time
+      org-log-done nil
       org-use-fast-todo-selection nil
       org-use-speed-commands t
       org-global-properties
@@ -203,7 +204,7 @@
 (setq org-capture-templates
       '(("b" "Inbox (active time stamp)" entry
          (file+headline my/gtd-main-file "Inbox")
-         "* TODO %?\n\n Captured at %u\n")))
+         "* TODO %?")))
 ;;;###autoload
 (defun my/org-capture ()
   (interactive)
@@ -384,6 +385,9 @@
 (setq solarized-scale-org-headlines nil
       solarized-high-contrast-mode-line t)
 (load-theme 'solarized-dark t)
+;; (enable-theme 'deeper-blue)
+;; (load-theme 'madhat2r-theme t)
+;; (load-theme 'solarized-light t)
 (set-face-attribute 'default nil :family "IPAGothic" :height 130)
 (set-fontset-font t 'japanese-jisx0208
                   (font-spec :family "IPAGothic"
@@ -1082,7 +1086,7 @@
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(fci-rule-color "#073642")
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-symbol-colors
@@ -1114,7 +1118,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (color-theme color-theme-buffer-local graphviz-dot-mode smooth-scroll latex-math-preview py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu)))
+    (helm-themes color-theme color-theme-buffer-local graphviz-dot-mode smooth-scroll latex-math-preview py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#839496" 0.2))
