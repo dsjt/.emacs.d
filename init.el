@@ -200,6 +200,7 @@
 (add-hook 'org-timer-set-hook 'org-clock-in)
 (add-hook 'org-timer-done-hook 'org-clock-out)
 (add-hook 'org-timer-stop-hook 'org-clock-out)
+(add-to-list 'auto-mode-alist '("TODO" . org-mode))
 ;; capture
 (setq org-capture-templates
       '(("b" "Inbox (active time stamp)" entry
@@ -528,6 +529,9 @@
 
 ;; Latex
 (package-install 'auctex)
+;; tex
+(require 'tex-site)
+(setq LaTeX-command "platex")
 (require 'latex)
 (add-hook 'latex-mode-hook #'tex-fold-mode)
 (define-key LaTeX-mode-map (kbd "C-^") #'TeX-fold-dwim)
@@ -899,6 +903,7 @@
          nil)
         hs-special-modes-alist))
 (add-hook 'python-mode-hook 'my/replace-hs-spectial)
+(setq python-shell-completion-native-enable nil)
 
 (package-install 'py-autopep8)
 (require 'py-autopep8)
@@ -1217,3 +1222,16 @@
 ;; 	(overlay-put o 'chosig t)))))
 
 ;; (add-hook'after-change-major-mode-hook 'chosig-choose-background)
+
+
+;; changelogのような作業ログ向けに、crux-smart-open-line-aboveを改造
+(defun my/insert-date-if-head-of-line ()
+  (interactive)
+  (if (= (current-column) 0)
+      (and (org-time-stamp-inactive '(16))
+           (insert " "))))
+(advice-add 'crux-smart-open-line-above :after 'my/insert-date-if-head-of-line)
+;; (advice-remove 'crux-smart-open-line-above 'my/insert-date-if-head-of-line)
+
+;; javascript
+(setq js-indent-level 2)

@@ -3,7 +3,9 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        comment-dwim
         comment-indent-new-line
+        delete-horizontal-space
         electric-graphviz-dot-semi
         electric-newline-and-maybe-indent
         forward-sexp
@@ -12,6 +14,7 @@
         kill-region
         org-delete-char
         org-force-self-insert
+        org-return-indent
         org-self-insert-command
         org-seq-end
         org-seq-home
@@ -21,6 +24,7 @@
         seq-home
         sp-backward-sexp
         sp-forward-sexp
+        sp-join-sexp
         sp-splice-sexp
         ))
 

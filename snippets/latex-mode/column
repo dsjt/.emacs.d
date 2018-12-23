@@ -1,0 +1,6 @@
+# key: column
+# name: column
+# --
+\begin{column}{${1:0.8\textwidth}}
+  $0
+\end{column}
