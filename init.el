@@ -250,8 +250,8 @@
                                        ;; 'todo
                                        ;; '("DONE" "CANC")
                                        ))))
-          (tags-todo "+Project/TODO")
-          (tags "Wait")
+          ;; (tags-todo "+Project/TODO")
+          ;; (tags "Wait")
           ))
         ("w" "8 days agenda"
          ((agenda "" ((org-agenda-span 8)
@@ -338,7 +338,8 @@
                                (ruby . t)
                                (python . t)
                                (dot . t)
-                               (org . t)))
+                               (org . t)
+                               (lisp . t)))
 (setq org-babel-python-command "python3")
 (setq org-src-window-setup 'other-window)
 (setq org-image-actual-width '(256))
@@ -647,7 +648,7 @@
 (setq scroll-margin 5)
 (setq next-screen-context-lines 10)
 (setq scroll-preserve-screen-position t)
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-scroll-amount '(8 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
@@ -1123,7 +1124,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (helm-themes color-theme color-theme-buffer-local graphviz-dot-mode smooth-scroll latex-math-preview py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu)))
+    (org-preview-html org-attach-screenshot markdown-mode helm-themes color-theme color-theme-buffer-local graphviz-dot-mode smooth-scroll latex-math-preview py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#839496" 0.2))
@@ -1159,12 +1160,6 @@
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
  '(xterm-color-names-bright
    ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"]))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 (package-install 'org-dashboard)
 
@@ -1235,3 +1230,15 @@
 
 ;; javascript
 (setq js-indent-level 2)
+
+(package-install 'markdown-mode)
+
+(package-install 'org-attach-screenshot)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; (package-install 'org-preview-html)
