@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: forj
+# key: forj
+# --
+for j in range($1):
+    $0

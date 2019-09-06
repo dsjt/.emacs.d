@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        c-electric-semi&comma
         comment-dwim
         comment-indent-new-line
         delete-horizontal-space
@@ -22,6 +23,7 @@
         org-yank
         seq-end
         seq-home
+        sp-backward-kill-word
         sp-backward-sexp
         sp-forward-sexp
         sp-join-sexp
@@ -30,4 +32,8 @@
 
 (setq mc/cmds-to-run-once
       '(
+        c-electric-lt-gt
+        c-electric-paren
+        howm-list-buffers
+        howm-list-grep
         ))

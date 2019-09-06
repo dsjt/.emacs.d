@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: 2dlist
+# key: 2dlist
+# --
+[[${1:0}]*${2:N} for _ in range(${3:N})]$0

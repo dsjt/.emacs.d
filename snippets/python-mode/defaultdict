@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: defaultdict
+# key: defaultd
+# --
+from collections import defaultdict
+d = defaultdict(int)

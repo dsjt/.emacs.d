@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: itemgetter
+# key: itemgetter
+# --
+# from operator import itemgetter
+itemgetter($1)$0

@@ -57,7 +57,7 @@
   (show-paren-mode +1)
   (global-hl-line-mode +1)
   (tool-bar-mode -1)
-  (menu-bar-mode -1)
+  (menu-bar-mode 1)
   (scroll-bar-mode -1)
   (column-number-mode +1)
   (transient-mark-mode +1)
@@ -184,7 +184,7 @@
 
 (setq org-startup-folded nil
       org-hide-leading-stars nil
-      ;; org-log-done 'time
+      org-log-repeat nil
       org-log-done nil
       org-use-fast-todo-selection nil
       org-use-speed-commands t
@@ -337,6 +337,7 @@
                                (gnuplot . t)
                                (ruby . t)
                                (python . t)
+                               (ipython . t)
                                (dot . t)
                                (org . t)
                                (lisp . t)))
@@ -347,6 +348,15 @@
 (define-key org-src-mode-map (kbd "C-c C-7") 'org-edit-src-exit)
 
 ;; (el-get-bundle 'f)
+(package-install 'ob-ipython)
+(require 'ob-ipython)
+;; ソースコードを書き出すコマンド
+(defun org-babel-tangle-and-execute ()
+  (interactive)
+  (org-babel-tangle)
+  (org-babel-execute-buffer)
+  (org-display-inline-images))
+(define-key org-mode-map (kbd "C-c C-v C-m") 'org-babel-tangle-and-execute)
 ;; (el-get-bundle! 'gregsexton/ob-ipython)
 ;; (autoload 'org-babel-execute:python "ob-python.el")
 ;; (with-eval-after-load 'ob-python
@@ -390,14 +400,19 @@
 ;; (enable-theme 'deeper-blue)
 ;; (load-theme 'madhat2r-theme t)
 ;; (load-theme 'solarized-light t)
-(set-face-attribute 'default nil :family "IPAGothic" :height 130)
-(set-fontset-font t 'japanese-jisx0208
-                  (font-spec :family "IPAGothic"
-                             :size 18))
+;; (set-face-attribute 'default nil :family "IPAGothic")
+(set-face-attribute 'default nil :family "Hackgen" :height 150)
+;; プロポーショナルを使いたい時
+(set-fontset-font t 'japanese-jisx0208 (font-spec :family "Takao P ゴシック"))
+;; プロポーショナルから元に戻したい時
+;; (set-fontset-font t 'japanese-jisx0208 (font-spec :family "Hackgen"))
+;; (frame-parameter nil 'font)
+
 ;; aaaaaaaaAA
 ;; あああああ
-(add-to-list 'face-font-rescale-alist
-             '(("IPAGothic" . 1.4)))
+;; (add-to-list 'face-font-rescale-alist
+;;              '(("IPAGothic" . 1.4)))
+
 (package-install 'rainbow-mode)
 ;;;###autoload
 (defun set-alpha (alpha-num)
@@ -747,6 +762,10 @@
 (setq clang-format-executable "clang-format-3.5")
 (set-default 'clang-format-style
              "{BasedOnStyle: Google, IndentWidth: 4, Standard: C++11}")
+;; C++ style
+;; (add-hook 'c++-mode-hook
+;;           '(lambda()
+;;              (c-set-style "cc-mode")))
 
 ;; Folding
 (require 'hideshow)
@@ -760,7 +779,7 @@
 (define-key hs-minor-mode-map (kbd "C-^") 'hs-toggle-hiding)
 (define-key hs-minor-mode-map (kbd "C-M-^") 'hs-hide-all)
 (define-key hs-minor-mode-map (kbd "C-M-~") 'hs-show-all)
-(define-key hs-minor-mode-map (kbd "C-l point)^")
+(define-key hs-minor-mode-map (kbd "C-l ^")
   (lambda () (interactive) (hs-hide-level 2)))
 (defun display-code-line-counts (ov)
   (overlay-put ov 'display
@@ -971,8 +990,8 @@
 ;; (el-get-bundle htmlize)
 
 ;; ;; key-bindings 2
-;; (global-set-key (kbd "C-q M-i") 'quoted-insert)
-;; (global-set-key (kbd "C-x C-r") 'eval-region)
+(global-set-key (kbd "C-q M-i") 'quoted-insert)
+(global-set-key (kbd "C-x C-r") 'eval-region)
 
 ;; Whitespace
 (require 'whitespace)
@@ -1046,6 +1065,7 @@
       migemo-regex-dictionary nil
       migemo-coding-system 'utf-8-unix)
 (migemo-init)
+(setq migemo-isearch-enable-p nil)
 
 ;; global Indirect buffer
 (defvar indirect-mode-name nil
@@ -1124,9 +1144,22 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (org-preview-html org-attach-screenshot markdown-mode helm-themes color-theme color-theme-buffer-local graphviz-dot-mode smooth-scroll latex-math-preview py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu)))
+    (darkroom ob-ipython org-preview-html org-attach-screenshot markdown-mode helm-themes color-theme color-theme-buffer-local graphviz-dot-mode smooth-scroll latex-math-preview py-autopep8 auctex python volatile-highlights yascroll company company-mode bm git-gutter-fringe popwin visual-regexp htmlize ox-reveal org-reveal git-gutter yasnippet-snippets helm-c-yasnippet yasnippet org-gcal org-dashboard rotate smartrep dired-hacks-utils org helm undo-tree solarized-theme smartparens sequential-command restart-emacs recentf-ext rainbow-mode openwith open-junk-file multiple-cursors migemo magit howm helm-swoop helm-ag expand-region dired-filter crux avy anzu)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
+ '(safe-local-variable-values
+   (quote
+    ((eval font-lock-add-keywords nil
+           (\`
+            (((\,
+               (concat "("
+                       (regexp-opt
+                        (quote
+                         ("sp-do-move-op" "sp-do-move-cl" "sp-do-put-op" "sp-do-put-cl" "sp-do-del-op" "sp-do-del-cl"))
+                        t)
+                       "\\_>"))
+              1
+              (quote font-lock-variable-name-face))))))))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#839496" 0.2))
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
@@ -1178,9 +1211,9 @@
 (package-install 'htmlize)
 (require 'htmlize)
 
-(package-install 'smooth-scroll)
-(require 'smooth-scroll)
-(smooth-scroll-mode 1)
+;; (package-install 'smooth-scroll)
+;; (require 'smooth-scroll)
+;; (smooth-scroll-mode 1)
 
 ;; (require 'graphviz-dot-mode)
 
@@ -1234,6 +1267,7 @@
 (package-install 'markdown-mode)
 
 (package-install 'org-attach-screenshot)
+(setq org-attach-screenshot-command-line "gnome-screenshot --area -f %f")
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -1242,3 +1276,31 @@
  )
 
 ;; (package-install 'org-preview-html)
+
+
+(require 'lskey-mode
+         (format "%shobby/CAE/lskey-mode/lskey-mode.el" my/hdd-dir))
+(add-to-list 'auto-mode-alist '("\\.k$\\|\\.key$" . lskey-mode))
+(add-hook 'lskey-mode-hook '(lambda () (hs-minor-mode 1)))
+(add-to-list 'hs-special-modes-alist lskey-hs-special)
+(when (boundp 'sp-ignore-modes-list)
+  (add-to-list 'sp-ignore-modes-list 'lskey-mode))
+
+;; (add-to-list 'align-rules-list
+;;              '(lsdyna-align
+;;                (regexp . "^.\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\)")
+;;                (modes . '(lskey-mode))
+;;                ))
+;; (align (region-beginning) (region-end)
+;;        nil
+;;        '((lsdyna-align
+;;                (regexp . ".\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\).\\(.\\{9\\}\\)")
+;;                (modes . '(lskey-mode))
+;;                )))
+;; (s-concat (s-repeat 8 ".\\(.\\{9\\}\\)"))
+
+(require 'darkroom)
+
+
+(global-set-key [C-mouse-4] 'text-scale-increase)
+(global-set-key [C-mouse-5] 'text-scale-decrease)

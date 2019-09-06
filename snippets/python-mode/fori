@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: fori
+# key: fori
+# --
+for i in range($1):
+    $0

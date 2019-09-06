@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: heapq
+# key: heapq
+# --
+import heapq

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: recursion
+# key: recursion
+# --
+sys.setrecursionlimit(100000)

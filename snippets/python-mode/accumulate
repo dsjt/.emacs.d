@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: accumulate
+# key: accumulate
+# --
+from itertools import accumulate

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: 3dlist
+# key: 3dlist
+# --
+[[[${1:0}]*${2:N} for _ in range(${3:N})] for _ in range(${4:N})]

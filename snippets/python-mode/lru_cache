@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lru_cache
+# key: lru
+# --
+@functools.lru_cache(maxsize=None)
